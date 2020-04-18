@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour
         ArtSlider.maxValue = MaxArtPoints;
         SoundSlider.maxValue = MaxSoundPoints;
         BoredomSlider.maxValue = MaxBoredomPoints;
+
+        Money = 1000;
     }
 
     // Update is called once per frame
