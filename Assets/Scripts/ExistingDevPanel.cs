@@ -15,6 +15,6 @@ public class ExistingDevPanel : MonoBehaviour
     }
 
     public void FireDeveloper(){
-        Destroy(referencedDeveloper);
+        Destroy(referencedDeveloper.gameObject);
     }
 }

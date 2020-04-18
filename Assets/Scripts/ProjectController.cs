@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProjectController : MonoBehaviour
 {
@@ -9,8 +10,15 @@ public class ProjectController : MonoBehaviour
     public string theme;
 
     public DevStats nameChangeEffect;
+    public int nameChangeBoredom;
     public DevStats genreChangeEffect;
+    public int genreChangeBoredom;
     public DevStats themeChangeEffect;
+    public int themeChangeBoredom;
+
+    public InputField NameInput;
+    public Dropdown GenreInput;
+    public InputField ThemeInput;
 
     GameController controller;
 
@@ -32,14 +40,20 @@ public class ProjectController : MonoBehaviour
 
     public void ChangeName(){
         controller.ApplyPoints(nameChangeEffect);
+        controller.BoredomPoints -= nameChangeBoredom;
+        gameName = NameInput.text;
     }
 
     public void ChangeGenre(){  
         controller.ApplyPoints(genreChangeEffect);
+        controller.BoredomPoints -= genreChangeBoredom;
+        genre = GenreInput.itemText.text;
     }
 
     public void ChangeTheme(){
         controller.ApplyPoints(themeChangeEffect);
+        controller.BoredomPoints -= themeChangeBoredom;
+        theme = ThemeInput.text;
     }
 
     public string GetDevsList(){
