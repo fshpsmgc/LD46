@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ProjectUpdateItem : MonoBehaviour
 {
+    public string LogName;
     [SerializeField] DevStats bonus;
     [SerializeField] int Boredom;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +25,6 @@ public class ProjectUpdateItem : MonoBehaviour
         controller.ApplyPoints(bonus);
         controller.BoredomPoints -= Boredom;
         GetComponent<Button>().interactable = false;
+        Log.Add($"{LogName} feature was added to the game");
     }
 }

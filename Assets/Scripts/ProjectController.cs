@@ -42,18 +42,22 @@ public class ProjectController : MonoBehaviour
         controller.ApplyPoints(nameChangeEffect);
         controller.BoredomPoints -= nameChangeBoredom;
         gameName = NameInput.text;
+        Log.Add($"Name was changed to {gameName}");
     }
 
     public void ChangeGenre(){  
         controller.ApplyPoints(genreChangeEffect);
         controller.BoredomPoints -= genreChangeBoredom;
+        genre = GenreInput.options[GenreInput.value].text;
         genre = GenreInput.itemText.text;
+        Log.Add($"Genre was changed to {genre}");
     }
 
     public void ChangeTheme(){
         controller.ApplyPoints(themeChangeEffect);
         controller.BoredomPoints -= themeChangeBoredom;
         theme = ThemeInput.text;
+        Log.Add($"Theme was changed to {theme}");
     }
 
     public string GetDevsList(){

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CreationController : MonoBehaviour
 {
     public ProjectController project;
+    public GameController gameController;
 
     public InputField gameNameInput;
     public InputField themeInput;
@@ -29,6 +30,7 @@ public class CreationController : MonoBehaviour
     public InputField MoneyLabel;
     public Text SkillsLabel;
 
+    public InputField devNameInput;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +47,7 @@ public class CreationController : MonoBehaviour
     public void StartDevelopment(){
         project.gameName = gameNameInput.text;
         project.theme = themeInput.text;
-        project.genre = genreDropdown.itemText.text;
+        project.genre = genreDropdown.options[genreDropdown.value].text;
         
         projectName.text = gameNameInput.text;
         projectTheme.text = themeInput.text;
@@ -54,6 +56,11 @@ public class CreationController : MonoBehaviour
         mainDev.stats.ProgrammingSkill = ProgrammingPoints;
         mainDev.stats.ArtSkill = ArtPoints;
         mainDev.stats.SoundSkill = SoundPoints;
+        mainDev.DevName = devNameInput.text;
+        
+        gameController.Money = Money;
+        gameController.StartGame();
+        Log.Add($"Development on {project.gameName} ({project.theme},{project.genre}) was started by {mainDev.DevName}");
     }
 
     public void AddGDPoints(){
@@ -86,7 +93,7 @@ public class CreationController : MonoBehaviour
 
     public void AddMoney(){
         if(pointsLeft <= 0) return;
-        Money += 100;
+        Money += 10;
         pointsLeft--;
         MoneyLabel.text = Money.ToString(); 
     }

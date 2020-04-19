@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     public float MaxSoundPoints;
     public float BoredomPoints;
     public float MaxBoredomPoints;
+    public float BoredomModifier;
 
     public float Money;
 
@@ -25,31 +26,48 @@ public class GameController : MonoBehaviour
     [SerializeField] Slider ArtSlider;
     [SerializeField] Slider SoundSlider;
     [SerializeField] Slider BoredomSlider;
+    bool gameStarted;
+
+    public GameObject GameCanvas;
+    public GameObject EndCanvas;
+    public Text GameLog;
+    
+    private void Awake() {
+        Screen.SetResolution(1280,720, FullScreenMode.Windowed, 60);
+    }
+    
     // Start is called before the first frame update
-    void Start()
+    public void StartGame()
     {
         GameDesignSlider.maxValue = MaxGameDesignPoints;
         ProgrammingSlider.maxValue = MaxProgrammingPoints;
         ArtSlider.maxValue = MaxArtPoints;
         SoundSlider.maxValue = MaxSoundPoints;
         BoredomSlider.maxValue = MaxBoredomPoints;
-
-        Money = 1000;
+        gameStarted = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        BoredomPoints += Time.deltaTime * (Developer.Count + 1);
-        if(BoredomPoints >= MaxBoredomPoints){
-            BoredomPoints = 0;
-            DeleteDeveloper();
-        }
+        if(gameStarted){
+            BoredomPoints += Time.deltaTime * (Developer.Count + 1) * BoredomModifier;
+            if(BoredomPoints >= MaxBoredomPoints){
+                BoredomPoints = 0;
+                DeleteDeveloper();
+            }
+    
+            BoredomSlider.value = BoredomPoints;
 
-        BoredomSlider.value = BoredomPoints;
+            if(GameDesignPoints >= MaxGameDesignPoints && 
+                ProgrammingPoints >= MaxProgrammingPoints &&
+                ArtPoints >= MaxArtPoints &&
+                SoundPoints >= MaxSoundPoints) GameOver(true);
+        }
     }
 
     public void ApplyPoints(DevStats stats) {
+        if(!gameStarted) return;
         if(GameDesignPoints < MaxGameDesignPoints) GameDesignPoints += stats.GameDesignSkill;
         if(ProgrammingPoints < MaxProgrammingPoints) ProgrammingPoints += stats.ProgrammingSkill;
         if(ArtPoints < MaxArtPoints) ArtPoints += stats.ArtSkill;
@@ -73,11 +91,26 @@ public class GameController : MonoBehaviour
         Destroy(devs[Random.Range(0, devs.Length - 1)]);
     }
 
-    public void GameOver(){
-        print("Game Over");
+    public void GameOver(bool victory = false){
+        gameStarted = false;
+        GameCanvas.SetActive(false);
+        EndCanvas.SetActive(true);
+        if(victory){
+            Log.Add($"Game was successfully finished and, like, {Random.Range(30, 250)} people played it. Great job!");
+        }else{
+            float gdPercentage = GameDesignPoints/MaxGameDesignPoints * 100;
+            float codePercentage = ProgrammingPoints/MaxProgrammingPoints * 100;
+            float artPercentage = ArtPoints/MaxArtPoints * 100;
+            float soundPercentage = SoundPoints/MaxSoundPoints * 100;
+            Log.Add($"Game, unfortunately, couldn't be completed in time. Here's what you managed to complete: \nGame Design: {gdPercentage}%\nProgramming: {codePercentage}%\nArt: {artPercentage}%\nSound: {soundPercentage}%");
+        }
+        GameLog.text = Log.GetLog();
     }
 
-    public void ChangeMoney(int value){
+    public bool ChangeMoney(int value){
+        print(Money + value);
+        if(Money + value < 0) return false;
         Money += value;
+        return true;
     }
 }

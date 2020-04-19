@@ -14,6 +14,8 @@ public class DevelopersController : MonoBehaviour
     [SerializeField] RectTransform DevsList;
     [SerializeField] GameObject ExistingDevPanelPrefab;
     [SerializeField] GameObject NewDevPanelPrefab;
+
+    public Sprite[] DevFaces;
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +53,8 @@ public class DevelopersController : MonoBehaviour
 
     void SpawnTempDevs(int newDevs){
         for(int i = 0; i < newDevs; i++){
-            Instantiate(DeveloperPrefab, transform);
+            Developer developer = Instantiate(DeveloperPrefab, transform).GetComponent<Developer>();
+            developer.Face = DevFaces[Random.Range(0,DevFaces.Length)];
         }
     }
 

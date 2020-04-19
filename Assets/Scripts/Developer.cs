@@ -38,7 +38,7 @@ public class DevStats{
                     Delay--;
                     break;
                 default:
-                    Budget += Random.Range(85, 125);
+                    Budget += Random.Range(0, 25);
                     break;
             }
         }
@@ -416,6 +416,7 @@ public class Developer : MonoBehaviour
     private GameController controller;
     public string DevName;
     public GameObject Panel;
+    public Sprite Face;
 
     void Awake(){
         if(generateStatsOnStart){
@@ -447,5 +448,6 @@ public class Developer : MonoBehaviour
 
     private void OnDestroy() {
         Destroy(Panel);
+        Log.Add($"{DevName} has left the project");
     }
 }
